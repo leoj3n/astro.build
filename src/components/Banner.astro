@@ -3,22 +3,37 @@ const { href, items = [] } = Astro.props;
 const Tag = href ? 'a' : 'div';
 ---
 
-<!-- Blocking script -->
-<script global hoist>
-    const marqueePaused = (localStorage.getItem('astro:marquee-paused') || 'false') === 'true';
-    window.addEventListener('DOMContentLoaded', () => {
-        const checkbox = document.querySelector('#marquee-pause');
-        checkbox.checked = marqueePaused;
-        document.body.classList.add('js');
-    });
-</script>
-
 <not-marquee role="marquee" aria-labelledby="not-marquee-label">
     <input id="marquee-pause" type="checkbox" aria-label="Toggle marquee">
     <Tag {href} class="track">
         {Array.from({ length: 6 }, (_, i) => <span class="group" style={`--i: ${i};`} id={i === 0 ? 'not-marquee-label' : undefined} aria-hidden={i > 0 ? 'true' : undefined}>{items.map(item => <span>{item}</span>)}</span>)}
     </Tag>
 </not-marquee>
+
+<!-- Blocking, rehydrate from localStorage immediately -->
+<script global>
+    (function() {
+        const marqueePaused = (localStorage.getItem('astro:marquee-paused') || 'false') === 'true';
+        const checkbox = document.getElementById('marquee-pause');
+        checkbox.checked = marqueePaused;
+    })();
+</script>
+
+<!-- Non-blocking -->
+<script type="module">
+    (function() {
+        const checkbox = document.querySelector('#marquee-pause');
+        function onChange(element) {
+            const paused = element.checked;
+            localStorage.setItem('astro:marquee-paused', `${paused}`);
+        }
+        checkbox.addEventListener('change', ({ target }) => onChange(target))
+        checkbox.addEventListener('keydown', ({ target, key }) => {
+            if (key !== 'Enter') return;
+            onChange(target);
+        })
+    })();
+</script>
 
 <style>
     not-marquee {
