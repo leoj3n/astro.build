@@ -16,9 +16,6 @@ const { title, description, image = new URL('./social.png', Astro.site), canonic
     checkbox.checked = marqueePaused;
     document.body.classList.add('js');
   });
-  if ('paintWorklet' in CSS) {
-    CSS.paintWorklet.addModule('/pixel.worklet.js');
-  }
 </script>
 
 <!-- Global Metadata -->
