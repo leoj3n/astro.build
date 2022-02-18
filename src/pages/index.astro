@@ -33,7 +33,10 @@ const meta = {
 ---
 
 <Layout {meta}>
-	<Banner slot="banner" href="/blog/the-astro-technology-company/" items={[`Announcing the Astro Technology Company!`, `Investing in the future of Astro.`]} />
+	<Fragment slot="banner">
+		<Noscript />
+	<Banner href="/blog/the-astro-technology-company/" items={[`Announcing the Astro Technology Company!`, `Investing in the future of Astro.`]} />
+	</Fragment>
 
 	<Nav marginBottom slot="nav" />
 
@@ -155,10 +158,6 @@ const meta = {
 		<Title id="sponsors" slot="title">Sponsored by</Title>
 		<ArrowLink always href="https://opencollective.com/astrodotbuild" slot="cta">Become a sponsor</ArrowLink>
 	</Sponsors>
-
-	<Footer slot="footer" />
-
-	<Noscript />
 
 	<script type="module" src="/src/scripts/animations.ts"></script>
 </Layout>

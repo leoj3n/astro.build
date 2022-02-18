@@ -5,11 +5,15 @@ import styles from '../styles/main.css?url';
 export interface Props {
   title?: string;
   description: string;
-  canonicalURL: URL | string
+  canonicalURL?: URL | string
   image?: string;
 }
 
-const { description, image = new URL('./social.png', Astro.site), canonicalURL } = Astro.props;
+const {
+  description,
+  image = new URL('./social.png', Astro.site),
+  canonicalURL = Astro.request.canonicalURL
+} = Astro.props;
 
 const title = [Astro.props.title, 'Astro']
   .filter(Boolean)
